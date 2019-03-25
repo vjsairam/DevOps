@@ -1,12 +1,12 @@
 terraform {
   backend "s3" {
-    bucket = "terraform-fargate" # ! REPLACE WITH YOUR TERRAFORM BACKEND BUCKET
-    key    = "terraform.tfstate"
+    bucket = "<Include the S3 bucket name>"
+    key    = "<Include the S3 bucket name>"
     region = "us-east-1"
   }
 }
 variable "S3_BACKEND_BUCKET" {
-  default = "terraform-fargate" # ! REPLACE WITH YOUR TERRAFORM BACKEND BUCKET
+  default = "<Include the S3 bucket name>"
 }
 
 variable "S3_BUCKET_REGION" {
