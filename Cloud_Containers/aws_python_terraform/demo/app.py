@@ -5,7 +5,7 @@ from flask import Flask
 app = Flask(__name__)
 @app.route("/")
 def hello():
-    url = "http://dojodevopschallenge.s3-website-eu-west-1.amazonaws.com/fortune_of_the_day.json"
+    url = "<Include the URL here to be worked upon>"
     response = urllib.urlopen(url)
     data = json.loads(response.read())
     list2=[]
