@@ -1,8 +1,4 @@
-**Table of Contents**
-
-[TOC]
-
-#Overview
+**Overview**
 
 The project is to demonstrate the use of AWS Fargate, which alows you to run containers without having to manage servers or clusters. It can currently be used on top of AWS Elastic Container Service (ECS) with support for Kubernetes (EKS).  Bringing Serverless to Microservice is the main objective of this project, where all the underlying resources are managed by AWS Fargate and the whole platform is provisioned with Terraform. 
 
@@ -11,12 +7,14 @@ The project is to demonstrate the use of AWS Fargate, which alows you to run con
 This is a simple project of deploying an docker image hosted on AWS Elastic Container Repository(ECR) to ECS Fargate. The stack can be changed with the respective terraform variables and modules.  The overall objective is to setup up a webserver running on AWS Fargate, accessible through an Application Load Balancer. 
 
 
-#Project Setup
+**Project Setup**
 
 Clone the project and navigate to the aws_python_terraform project, 
 
-`git clone https://github.com/vjsairam/DevOps.git`
- `cd Cloud_Containers/aws_python_terraform/`
+    
+    git clone https://github.com/vjsairam/DevOps.git
+    cd Cloud_Containers/aws_python_terraform/
+    
 
 *The project assumes that the user has the best understanding on the [Best Practices for Managing AWS Access Keys](https://docs.aws.amazon.com/general/latest/gr/aws-access-keys-best-practices.html) or Using any third party tools like Vault.* 
 
@@ -34,91 +32,24 @@ Clone the project and navigate to the aws_python_terraform project,
 	ii. If you are using your personal computer, then you will need AWS CLI tools to push images to ECR. Refer to this [page](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-install.html) for installation details,
 `Cloud_Containers/aws_python_terraform/terraform/]$  $(aws ecr get-login --region us-east-1 --no-include-email)`
 	iii. Use the below command to build, tag and deploy, 
-`aws_python_terraform/demo/]$  docker build -t myapp . `
-`aws_python_terraform/demo/]$  docker tag myapp <include_myapp-repo>:latest`
-`aws_python_terraform/demo/]$  docker push <include_myapp-repo>:latest`
-
-#Overview
-
-
-#Overview
-
-
-
-
-
-###Characters
-                
-----
-
-~~Strikethrough~~ <s>Strikethrough (when enable html tag decode.)</s>
-*Italic*      _Italic_
-**Emphasis**  __Emphasis__
-***Emphasis Italic*** ___Emphasis Italic___
-
-Superscript: X<sub>2</sub>，Subscript: O<sup>2</sup>
-
-**Abbreviation(link HTML abbr tag)**
-
-The <abbr title="Hyper Text Markup Language">HTML</abbr> specification is maintained by the <abbr title="World Wide Web Consortium">W3C</abbr>.
-
-###Blockquotes
-
-> Blockquotes
-
-Paragraphs and Line Breaks
-                    
-> "Blockquotes Blockquotes", [Link](http://localhost/)。
-
-###Links
-
-[Links](http://localhost/)
-
-[Links with title](http://localhost/ "link title")
-
-`<link>` : <https://github.com>
-
-[Reference link][id/name] 
-
-[id/name]: http://link-url/
-
-GFM a-tail link @pandao
-
-###Code Blocks (multi-language) & highlighting
-
-####Inline code
-
-`$ npm install marked`
-
-####Code Blocks (Indented style)
-
-Indented 4 spaces, like `<pre>` (Preformatted Text).
-
-    <?php
-        echo "Hello world!";
-    ?>
     
-Code Blocks (Preformatted text):
+    ```
+    aws_python_terraform/demo/]$  docker build -t myapp . 
+    aws_python_terraform/demo/]$  docker tag myapp <include_myapp-repo>:latest
+    aws_python_terraform/demo/]$  docker push <include_myapp-repo>:latest 
+    ```
 
-    | First Header  | Second Header |
-    | ------------- | ------------- |
-    | Content Cell  | Content Cell  |
-    | Content Cell  | Content Cell  |
 
-####HTML code
+**Project Setup**
 
-```html
-<!DOCTYPE html>
-<html>
-    <head>
-        <mate charest="utf-8" />
-        <title>Hello world!</title>
-    </head>
-    <body>
-        <h1>Hello world!</h1>
-    </body>
-</html>
-```
+
+
+**Project Setup**
+
+
+
+
+
 
 
 ###Lists
@@ -154,48 +85,3 @@ Code Blocks (Preformatted text):
 3. Item C
                 
 ----
-                    
-###Tables
-                    
-First Header  | Second Header
-------------- | -------------
-Content Cell  | Content Cell
-Content Cell  | Content Cell 
-
-| First Header  | Second Header |
-| ------------- | ------------- |
-| Content Cell  | Content Cell  |
-| Content Cell  | Content Cell  |
-
-| Function name | Description                    |
-| ------------- | ------------------------------ |
-| `help()`      | Display the help window.       |
-| `destroy()`   | **Destroy your computer!**     |
-
-| Item      | Value |
-| --------- | -----:|
-| Computer  | $1600 |
-| Phone     |   $12 |
-| Pipe      |    $1 |
-
-| Left-Aligned  | Center Aligned  | Right Aligned |
-| :------------ |:---------------:| -----:|
-| col 3 is      | some wordy text | $1600 |
-| col 2 is      | centered        |   $12 |
-| zebra stripes | are neat        |    $1 |
-                
-----
-
-####HTML entities
-
-&copy; &  &uml; &trade; &iexcl; &pound;
-&amp; &lt; &gt; &yen; &euro; &reg; &plusmn; &para; &sect; &brvbar; &macr; &laquo; &middot; 
-
-X&sup2; Y&sup3; &frac34; &frac14;  &times;  &divide;   &raquo;
-
-18&ordm;C  &quot;  &apos;
-
-##Escaping for Special Characters
-
-\*literal asterisks\*
-
