@@ -1,22 +1,22 @@
 terraform {
   backend "s3" {
-    bucket = "<Include the S3 bucket name>"
-    key    = "<Include the S3 bucket name>"
-    region = "us-east-1"
+    bucket = "savescraped1"
+    key    = "savescraped1"
+    region = "us-east-2"
   }
 }
 variable "S3_BACKEND_BUCKET" {
-  default = "<Include the S3 bucket name>"
+  default = "savescraped1"
 }
 
 variable "S3_BUCKET_REGION" {
   type    = "string"
-  default = "us-east-1"
+  default = "us-east-2"
 }
 
 variable "AWS_REGION" {
   type    = "string"
-  default = "us-east-1"
+  default = "us-east-2"
 }
 
 variable "TAG_ENV" {

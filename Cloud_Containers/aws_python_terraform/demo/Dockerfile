@@ -1,6 +1,9 @@
-FROM python:2.7
-COPY . /app
-WORKDIR /app
-RUN pip install -r requirements.txt
+FROM node:carbon-alpine
+WORKDIR /usr/src/app
+COPY package*.json ./
+
+RUN npm install --only=production
+
+COPY . .
 EXPOSE 3000
-CMD python ./app.py
+CMD ["npm", "start"]
