@@ -1,1 +1,1 @@
-# jenkins-workflow-libs
+# shared-library
