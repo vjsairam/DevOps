@@ -1,0 +1,38 @@
+{% extends "layout.html" %}
+{% block body %}
+<div class="container">
+	<div class="row">
+		<div class="form_bo text-center">
+      <h2>Your word <span class="bigger"><b>{{ the_word }}</b></span> is phonetically spelled:</h2>
+			<h1><span class="bigger"><b>{{ word }}</b></span></h1>
+			<div id="map" class="center-block" style="max-width: 50%; height: 75%; text-align: center;"></div>
+      <form action="{{ url_for('home') }}">
+      <div class="align-center">
+
+        <input type="submit" class="btn btn-default" value="Try Another Word" />
+      </div>
+      </form>
+		</div>
+	</div>
+</div>
+<script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCe5Fw4YJAz6svqBlt7Ixgd-dUg27gnqCc&callback=initMap" >
+ </script>
+ <script>
+      function initMap() {
+        var middle = {lat: {{ spot[0] }}, lng: {{ spot[1] }}};
+        var map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 4,
+          center: middle
+        });
+        {% for other in others %}
+        var {{ other.wordage + other.ip_address.replace('.', '') }} = {lat: {{ other.latitude }}, lng: {{ other.longitude }}};
+        var marker = new google.maps.Marker({
+          position: {{ other.wordage + other.ip_address.replace('.', '') }},
+          map: map
+        });
+        {% endfor %}
+      }
+ </script>
+
+{% endblock %}

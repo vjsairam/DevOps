@@ -1,0 +1,38 @@
+@Library('jenkins-workflow-libs')_
+
+import groovy.json.JsonOutput 
+
+node {
+
+    def app
+
+    stage('Clone repository') {
+        checkout scm
+    }
+
+    stage('Build image') {
+        app = docker.build("heniseba/testing")
+    }
+
+    stage('Test image') {
+        app.inside {
+            sh 'echo "Tests passed"'
+        }
+    }
+
+    stage('Push image') {
+        docker.withRegistry('https://registry.hub.docker.com', 'docker-hub-credentials') {
+            app.push("${env.BUILD_NUMBER}")
+            app.push("latest")
+        }
+    }
+
+    stage('Provision Dev App') {
+        withCredentials([string(credentialsId: 'morpheusdata', variable: 'morpheusdata')]) {
+            String morpheusUrl = 'https://morpheus.liquidsky.io/api/apps'
+
+            Map<?, ?> postBody = [  "id": 66,  "templateName": "code_blueprint",  "name": "code_app",  "group": [    "id": 1,    "name": "customer-demo"  ],  "environment": "Dev",  "type": "morpheus",  "tiers": [    "App": [     "instances": [        [          "instance": [            "cloud": "aws-cust-somerset-demo",            "type": "docker",            "layout": [              "code": "docker-1.7-single",              "id": 305            ]          ],          "config": [            "expose": 8080,            "dockerImageVersion": "latest",            "dockerRegistryId": 20,            "dockerImage": "heniseba/testing"          ],          "loadBalancer": [],          "plan": [            "id": 88,            "code": "container-128"          ],          "volumes": [            [              "rootVolume": true,              "name": "root",              "maxStorage": 0,              "size": 1            ]          ],          "backup": [           "veeamManagedServer": "",            "jobAction": "new"          ]        ]      ],      "tierIndex": 0    ],    "Database": [      "instances": [        [          "instance": [            "cloud":"aws-cust-somerset-demo",            "type": "mysql",            "layout": [              "code": "mysql-5.7-single",              "id": 119            ]          ],          "config": [            "rootPassword": "admin",            "username": "admin",            "password": "admin"          ],          "loadBalancer": [],          "plan": [            "id": 88,           "code": "container-128"          ],          "volumes": [            [              "rootVolume": true,              "name": "root",              "maxStorage": 0,              "size": 1            ]          ],          "backup": [            "veeamManagedServer": "",            "jobAction": "new"          ]        ]      ],      "tierIndex": 1    ],    "Cache": [      "instances": [        [          "instance": [            "cloud": "aws-cust-somerset-demo",            "type": "redis",            "layout": [              "code": "redis-3.0-single",              "id": 781            ]          ],          "config": [            "rootPassword": "admin",            "username": "admin",            "password": "admin"          ],          "loadBalancer": [],          "plan": [            "id": 88,            "code": "container-128"          ],          "backup": [            "jobAction": "new",            "veeamManagedServer": ""          ],          "volumes": [            [              "rootVolume": true,              "name": "root",              "maxStorage": 0,              "size": 1            ]          ]        ]      ],      "tierIndex": 2    ]  ],  "config": [    "isEC2": false,   "isVpcSelectable": false  ]]
+            echo morpheusApp.buildApp(morpheusUrl, postBody, "${morpheusdata}")
+        }
+    }
+}

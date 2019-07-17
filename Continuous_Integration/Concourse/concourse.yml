@@ -1,0 +1,7 @@
+- name: resource-docker
+  type: git
+  source:
+    uri: https://github.com/vjsairam/DevOps.git
+    branch: master
+    paths:
+      - Continuous_Integration
