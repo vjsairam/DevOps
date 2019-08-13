@@ -1,0 +1,47 @@
+AWSTemplateFormatVersion: '2010-09-09' 
+Transform: AWS::Serverless-2016-10-31 
+Description: Outputs the Time 
+Parameters: 
+  Stage: 
+    Type: String 
+    AllowedValues: 
+      - staging 
+      - production 
+    Default: staging 
+    Description: Stage that can be added to resource names 
+  Branch: 
+    Type: String 
+    AllowedValues: 
+      - master 
+      - dev 
+    Default: master 
+    Description: List of Branches 
+Conditions: 
+  IsProdStage: 
+    Fn::Equals: [Ref: Branch, master] 
+Resources: 
+  TimeFunction: 
+    Type: AWS::Serverless::Function 
+    Properties: 
+      AutoPublishAlias: live 
+      DeploymentPreference: 
+        Enabled: IsProdStage 
+        Type: 
+          Fn::If: [IsProdStage, Linear10PercentEvery1Minute, AllAtOnce] 
+      Handler: index.handler 
+      Runtime: nodejs10.x 
+      CodeUri: ./ 
+      Events: 
+        MyTimeApi: 
+          Type: Api 
+          Properties: 
+            Path: /TimeResource 
+            Method: GET 
+            RestApiId: !Ref API 
+ 
+  API: 
+    Type: AWS::Serverless::Api 
+    Properties: 
+      StageName: !Ref Stage 
+      Variables: 
+        Stage: !Ref Stage 
