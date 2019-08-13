@@ -1,0 +1,21 @@
+version: 0.2 
+phases: 
+  install: 
+    runtime-versions: 
+        nodejs: 10 
+         
+  build: 
+    commands: 
+      - pip install --user aws-sam-cli 
+      - USER_BASE_PATH=$(python -m site --user-base)   
+      - export PATH=$PATH:$USER_BASE_PATH/bin   
+      - export BUCKET=lambda-deployment-artifacts-456   
+      - npm install time 
+      - sam validate 
+      - sam package --template-file template.yaml --s3-bucket $BUCKET --output-template-file outputtemplate.yaml 
+       
+artifacts: 
+  type: zip  
+  files: 
+    - template.yaml 
+    - outputtemplate.yaml 
