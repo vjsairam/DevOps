@@ -10,7 +10,7 @@ iam = session.client('iam', region_name=AWS_REGION)
 organization = session.client('organizations', region_name=AWS_REGION)
 POLICIES_PAGINATION = 100
 FIELDS_NAMES = ["ARN", "Policy Id", "Policy Name", "Version", "No of Error", "No of Security Warning", "No of Warning", "No of Suggestion", "Findings", "Document"]
-FAILURE_TYPES = ["ERROR", "SECURITY_WARNING"] # 'ERROR'|'SECURITY_WARNING'|'SUGGESTION'|'WARNING'
+FAILURE_TYPES = ["ERROR"] # 'ERROR'|'SECURITY_WARNING'|'SUGGESTION'|'WARNING'
 
 
 def get_policies():
