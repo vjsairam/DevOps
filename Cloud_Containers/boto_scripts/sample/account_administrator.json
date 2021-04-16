@@ -1,0 +1,116 @@
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "AccountAdminBlackList",
+            "Effect": "Allow",
+            "NotAction": [
+                "iam:*",
+                "organizations:*",
+                "account:*"
+            ],
+            "Resource": "*"
+        },
+        {
+            "Sid": "GlobalReadAccess",
+            "Effect": "Allow",
+            "Action": [
+                "iam:List*",
+                "iam:GetPolicy",
+                "iam:GetPolicyVersion",
+                "iam:GetRole",
+                "iam:GetRolePolicy",
+                "iam:GetInstanceProfile",
+                "sts:DecodeAuthorizationMessage",
+                "organizations:Describe*",
+                "organizations:List*",
+                "account:List*",
+                "servicequotas:Get*",
+                "servicequotas:List*"
+            ],
+            "Resource": "*"
+        },
+        {
+            "Sid": "GlobalGuardrails",
+            "Effect": "Deny",
+            "Action": [
+                "s3:PutObjectAcl",
+                "s3:PutObjectVersionAcl",
+                "s3:PutBucketWebsite",
+                "s3:PutAccessPointPublicAccessBlock",
+                "support:ResolveCase"
+            ],
+            "Resource": "*"
+        },
+        {
+            "Sid": "ServiceLinkRoles",
+            "Effect": "Allow",
+            "Action": [
+                "iam:CreateServiceLinkedRole",
+                "iam:DeleteServiceLinkedRole"
+            ],
+            "Resource": "*"
+        },
+        {
+            "Sid": "CreateInstanceProfile",
+            "Effect": "Allow",
+            "Action": [
+                "iam:CreateInstanceProfile",
+                "iam:AddRoleToInstanceProfile",
+                "iam:DeleteInstanceProfile",
+                "iam:RemoveRoleFromInstanceProfile"
+            ],
+            "Resource": "arn:aws:iam::*:instance-profile/*-ec2role"
+        },
+        {
+            "Sid": "CreateRDSRole",
+            "Effect": "Allow",
+            "Action": [
+                "iam:CreateRole",
+                "iam:DeleteRole",
+                "iam:UpdateRole",
+                "iam:TagRole"
+            ],
+            "Resource": "arn:aws:iam::*:role/rds-monitoring-role"
+        },
+        {
+            "Sid": "CreateServiceRoleWithBoundary",
+            "Effect": "Allow",
+            "Action": [
+                "iam:CreateRole",
+                "iam:DeleteRole",
+                "iam:UpdateRole",
+                "iam:TagRole",
+                "iam:DeleteRolePolicy",
+                "iam:PutRolePolicy",
+                "iam:DetachRolePolicy",
+                "iam:AttachRolePolicy",
+                "iam:GenerateServiceLastAccessedDetails"
+            ],
+            "Resource": [
+                "arn:aws:iam::*:role/*-service-role",
+                "arn:aws:iam::*:role/*-ec2role"
+            ],
+            "Condition": {
+                "StringLike": {
+                    "iam:PermissionsBoundary": [
+                        "*/iam-permissions-boundary",
+                        "*/service-role-permissions-boundary"
+                    ]
+                }
+            }
+        },
+        {
+            "Sid": "PassServiceRoles",
+            "Effect": "Allow",
+            "Action": [
+                "iam:PassRole"
+            ],
+            "Resource": [
+                "arn:aws:iam::*:role/*-service-role",
+                "arn:aws:iam::*:role/*-ec2role",
+                "arn:aws:iam::*:role/rds-monitoring-role"
+            ]
+        }
+    ]
+}

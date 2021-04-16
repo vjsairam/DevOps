@@ -1,0 +1,208 @@
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "GlobalReadAccess",
+            "Effect": "Allow",
+            "Action": [
+                "account:List*",
+                "iam:List*",
+                "iam:GetPolicy",
+                "iam:GetPolicyVersion",
+                "iam:GetRole",
+                "iam:GetRolePolicy",
+                "iam:GetInstanceProfile",
+                "kms:List*",
+                "kms:Get*",
+                "organizations:Describe*",
+                "organizations:List*",
+                "servicequotas:Get*",
+                "servicequotas:List*",
+                "sts:DecodeAuthorizationMessage"
+            ],
+            "Resource": "*"
+        },
+        {
+            "Sid": "RoleReadAccess",
+            "Effect": "Allow",
+            "Action": [
+                "cloudwatch:Describe*",
+                "cloudwatch:Get*",
+                "cloudwatch:List*",
+                "events:Describe*",
+                "events:List*",
+                "events:TestEventPattern",
+                "logs:DescribeLogGroups",
+                "logs:DescribeQueryDefinitions",
+                "ram:Get*",
+                "ram:List*",
+                "sns:Get*",
+                "sns:List*"
+            ],
+            "Resource": "*"
+        },
+        {
+            "Sid": "RoleFullAccess",
+            "Effect": "Allow",
+            "Action": [
+                "acm:*",
+                "acm-pca:*",
+                "support:*"
+            ],
+            "Resource": "*"
+        },
+        {
+            "Sid": "GlobalGuardrails",
+            "Effect": "Deny",
+            "Action": [
+                "s3:PutObjectAcl",
+                "s3:PutObjectVersionAcl",
+                "s3:PutBucketWebsite",
+                "s3:PutAccessPointPublicAccessBlock",
+                "support:ResolveCase"
+            ],
+            "Resource": "*"
+        },
+        {
+            "Sid": "AllowListS3Buckets",
+            "Effect": "Allow",
+            "Action": "s3:ListAllMyBuckets",
+            "Resource": "arn:aws:s3:::*"
+        },
+        {
+            "Sid": "AllowFullAccessToCRLBuckets",
+            "Effect": "Allow",
+            "Action": "s3:*",
+            "Resource": "arn:aws:s3:::*scat-rootchain-cdp*"
+        },
+        {
+            "Sid": "CloudwatchFullAccess",
+            "Effect": "Allow",
+            "Action": "cloudwatch:*",
+            "Resource": [
+                "arn:aws:cloudwatch::*:dashboard/ACM-*",
+                "arn:aws:cloudwatch:*:*:*:ACM-*"
+            ]
+        },
+        {
+            "Sid": "CloudwatchLogsReadAccess",
+            "Effect": "Allow",
+            "Action": [
+                "logs:Get*",
+                "logs:List*",
+                "logs:StartQuery",
+                "logs:StopQuery",
+                "logs:Describe*",
+                "logs:TestMetricFilter",
+                "logs:FilterLogEvents"
+            ],
+            "Resource": "arn:aws:logs:*:*:log-group:aws-controltower/CloudTrailLogs:*"
+        },
+        {
+            "Sid": "CloudwatchLogsFullAccess",
+            "Effect": "Allow",
+            "Action": "logs:*",
+            "Resource": "arn:aws:logs:*:*:log-group:ACM-*:*"
+        },
+        {
+            "Sid": "CloudwatchEventsFullAccess",
+            "Effect": "Allow",
+            "Action": "events:*",
+            "Resource": "arn:aws:events:*:*:rule/ACM-*"
+        },
+        {
+            "Sid": "AllowSnsAccess",
+            "Effect": "Allow",
+            "Action": "sns:*",
+            "Resource": "arn:aws:sns:*:*:ACM-*"
+        },
+        {
+            "Sid": "AllowRamShareCreate",
+            "Effect": "Allow",
+            "Action": [
+                "ram:CreateResourceShare"
+            ],
+            "Resource": "*",
+            "Condition": {
+                "Bool": {
+                    "ram:RequestedAllowsExternalPrincipals": "false"
+                },
+                "StringEquals": {
+                    "aws:RequestTag/ITSMServiceName": "SCAT"
+                }
+            }
+        },
+        {
+            "Sid": "AllowRamShareTag",
+            "Effect": "Allow",
+            "Action": [
+                "ram:TagResource"
+            ],
+            "Resource": "*",
+            "Condition": {
+                "StringEqualsIfExists": {
+                    "aws:ResourceTag/ITSMServiceName": "SCAT"
+                }
+            }
+        },
+        {
+            "Sid": "AllowRamShareModify",
+            "Effect": "Allow",
+            "Action": [
+                "ram:AssociateResourceSharePermission",
+                "ram:DisassociateResourceSharePermission",
+                "ram:DeleteResourceShare",
+                "ram:UpdateResourceShare"
+            ],
+            "Resource": "*",
+            "Condition": {
+                "StringEquals": {
+                    "aws:ResourceTag/ITSMServiceName": "SCAT"
+                }
+            }
+        },
+        {
+            "Sid": "AllowRamAssociate",
+            "Effect": "Allow",
+            "Action": [
+                "ram:AssociateResourceShare*",
+                "ram:DisassociateResourceShare*"
+            ],
+            "Resource": "*",
+            "Condition": {
+                "Bool": {
+                    "ram:RequestedAllowsExternalPrincipals": "false"
+                },
+                "StringEquals": {
+                    "ram:RequestedResourceType": "acm-pca:CertificateAuthority"
+                }
+            }
+        },
+        {
+            "Sid": "AllowUseOfKMSKeys",
+            "Effect": "Allow",
+            "Action": [
+                "kms:ListAliases",
+                "kms:DescribeKey",
+                "kms:Encrypt",
+                "kms:ReEncrypt*"
+            ],
+            "Resource": "*"
+        },
+        {
+            "Sid": "AllowKMSKeyGrantForAWSResources",
+            "Effect": "Allow",
+            "Action": [
+                "kms:CreateGrant",
+                "kms:ListGrants",
+                "kms:RevokeGrant"
+            ],
+            "Resource": "*",
+            "Condition": {
+                "Bool": {
+                    "kms:GrantIsForAWSResource": true
+                }
+            }
+        }
+    ]
+}

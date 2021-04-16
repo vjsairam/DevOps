@@ -1,0 +1,75 @@
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "AllowAcmAccess",
+            "Effect": "Allow",
+            "Action": [
+                "acm:DescribeCertificate",
+                "acm:GetCertificate",
+                "acm:ListCertificates",
+                "acm:ListTagsForCertificate",
+                "acm-pca:GetCertificate",
+                "acm-pca:List*",
+                "acm-pca:IssueCertificate"
+            ],
+            "Resource": "*"
+        },
+        {
+            "Sid": "AllowCertCreateWithOwnerTag",
+            "Effect": "Allow",
+            "Action": [
+                "acm:AddTagsToCertificate",
+                "acm:ImportCertificate",
+                "acm:RequestCertificate"
+            ],
+            "Resource": "*",
+            "Condition": {
+                "StringEquals": {
+                    "aws:RequestTag/CertOwner": "acm_test"
+                },
+                "StringEqualsIfExists": {
+                    "aws:ResourceTag/CertOwner": "acm_test"
+                }
+            }
+        },
+        {
+            "Sid": "AllowCertModifyWithOwnerTag",
+            "Effect": "Allow",
+            "Action": [
+                "acm:AddTagsToCertificate",
+                "acm:DeleteCertificate",
+                "acm:RemoveTagsFromCertificate",
+                "acm:RenewCertificate"
+            ],
+            "Resource": "*",
+            "Condition": {
+                "StringEquals": {
+                    "aws:ResourceTag/CertOwner": [
+                        "acm_test"
+                    ]
+                }
+            }
+        },
+        {
+            "Sid": "DenyUseOfAcmTemplates",
+            "Effect": "Deny",
+            "Action": [
+                "acm-pca:IssueCertificate"
+            ],
+            "Resource": [
+                "*"
+            ],
+            "Condition": {
+                "ArnLike": {
+                    "acm-pca:TemplateArn": [
+                        "arn:aws:acm-pca:::template/CodeSigningCertificate*",
+                        "arn:aws:acm-pca:::template/OCSPSigningCertificate*",
+                        "arn:aws:acm-pca:::template/RootCACertificate*",
+                        "arn:aws:acm-pca:::template/SubordinateCACertificate_*"
+                    ]
+                }
+            }
+        }
+    ]
+}
