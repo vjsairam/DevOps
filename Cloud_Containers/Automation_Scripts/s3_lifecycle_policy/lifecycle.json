@@ -1,0 +1,39 @@
+{
+    "Rules": [
+        {
+            "Expiration": {
+                "ExpiredObjectDeleteMarker": true
+            },
+            "ID": "LC_Rule_v1",
+            "Filter": {},
+            "Status": "Enabled",
+            "Transitions": [
+                {
+                    "Days": 60,
+                    "StorageClass": "INTELLIGENT_TIERING"
+                },
+                {
+                    "Days": 180,
+                    "StorageClass": "GLACIER_IR"
+                },
+                {
+                    "Days": 365,
+                    "StorageClass": "DEEP_ARCHIVE"
+                }
+            ],
+            "NoncurrentVersionTransitions": [
+                {
+                    "NoncurrentDays": 45,
+                    "StorageClass": "ONEZONE_IA"
+                },
+                {
+                    "NoncurrentDays": 120,
+                    "StorageClass": "DEEP_ARCHIVE"
+                }
+            ],
+            "AbortIncompleteMultipartUpload": {
+                "DaysAfterInitiation": 90
+            }
+        }
+    ]
+}
